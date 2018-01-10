@@ -28,4 +28,10 @@ Se han tomado las siguiente decisiones para comenzar la elaboración del proyect
 	* trello: Para implementar el tablero scrum. [Tableros Scrum con Trello](http://fernandollopis.dlsi.ua.es/?p=42)
 	* slack: Como herramienta de comunicación
 
+* Plan de formación:
+
+	* Herramientas que se van a utilizar: github, redmine, slack, trello,...
+	* HTML% y CCS3
+	* flask
+
 * La planificación del primer sptrint se hará la semana que viene.
