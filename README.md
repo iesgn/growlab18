@@ -9,11 +9,13 @@ Se han tomado las siguiente decisiones para comenzar la elaboración del proyect
 * Creación de varios equipos de trabajo:
 	* Equipo de diseño de la base de datos
 	* Equipo de diseño de la página web
-	* Equipo de desarrollo de la aplicaión python
+	* Equipo de desarrollo de la aplicación python
 
-	* Cada equipo tendra una personal responsable (facilitador).
+* Algunas consideraciones sobre los equipos de trabajo:
+
+	* Cada equipo tendrá una personal responsable (facilitador).
 	* Los equipos son abiertos, todos los miembros deben estar informados de los que demás hacen, para cuando sea necesario puedan cambiar de equipo.
-	* Durante el desarrollo del proyecto se prevee la creación de nuevos equipos de trabajo.
+	* Durante el desarrollo del proyecto se pueden crear de nuevos equipos de trabajo según las necesidades.
 
 * Utilización de metodologías ágiles, en concreto scrum para el desarrollo del proyecto.
 
@@ -21,7 +23,7 @@ Se han tomado las siguiente decisiones para comenzar la elaboración del proyect
 
 * Al principio de cada iteración (sprint) se asignarán tareas a los distintos equipos de trabajo, que se evaluarán al finalizar la misma.
 
-* Las herramientas que vamos a utilzar para el desarrollo del proyecto serán las siguientes:
+* Las herramientas que vamos a utilizar para el desarrollo del proyecto serán las siguientes:
 
 	* github: Como repositorio de la documentación y el código
 	* redmien: Como gestor de proyecto 
@@ -34,4 +36,4 @@ Se han tomado las siguiente decisiones para comenzar la elaboración del proyect
 	* HTML% y CCS3
 	* flask
 
-* La planificación del primer sptrint se hará la semana que viene.
+* La planificación del primer sprint se hará la semana que viene.
