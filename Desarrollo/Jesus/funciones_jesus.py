@@ -19,17 +19,3 @@ def calcular_candidatos(intervalo, hora_inicio, hora_fin):
 	diferencia = abs(rango_horas.total_seconds() - rango_horas_2.total_seconds())
 	candidatos = diferencia / (intervalo * 60)
 	return candidatos
-
-intervalo = int(input('Intervalo: '))
-nombre = input('Nombre: ')
-periodo = input('Periodo: ')
-prioridad = input('Prioridad: ')
-duracion = input('Duración: ')
-fecha_inicio = input('Fecha inicio: ') 
-hora_inicio = input('Hora inicio: ')
-fecha_fin = input('Fecha fin: ')
-hora_fin = input('Hora fin: ')
-
-print (calcular_huecos_dia(intervalo))
-print (programar_evento(nombre, periodo, prioridad, duracion, fecha_inicio, hora_inicio, fecha_fin, hora_fin))
-print (calcular_candidatos(intervalo, hora_inicio, hora_fin))
