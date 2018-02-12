@@ -55,28 +55,58 @@ def GenerarCandidatos(**kwargs):
 
 	return lista			
 
-# Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de listas de diccionarios			
-def TablaTemPri(*args):                                                                      #(No me he repetido, es asi)
+# Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de diccionarios			
+def TablaTemPri(*args):                                                                     
 	tempri=[]
 	priUno=[]
 	priDos=[]
 	priTres=[]
 	for evento in args:
-		if evento["prioridad"]=="3":
-			priUno.append(GenerarCandidatos(**evento))
+		if evento["prioridad"]=="1":
+			for candidato1 in GenerarCandidatos(**evento):
+				if len(priUno)>0:
+					for idx,pos1 in enumerate(priUno):
+						if candidato1["hora_inicio"]<pos1["hora_inicio"]:
+							priUno.insert(idx,candidato1)
+							break
+						elif idx==len(priUno)-1:
+							priUno.append(candidato1)
+							break			
+				else:
+					priUno.append(candidato1)		
 		elif evento["prioridad"]=="2":
-			priDos.append(GenerarCandidatos(**evento))	
-		elif evento["prioridad"]=="1":
-			priTres.append(GenerarCandidatos(**evento))	
-	tempri.append(priUno)
+			for candidato2 in GenerarCandidatos(**evento):
+				if len(priDos)>0:
+					for idx,pos2 in enumerate(priDos):
+						if candidato2["hora_inicio"]<pos2["hora_inicio"]:
+							priDos.insert(idx,candidato2)
+							break
+						elif idx==len(priDos)-1:
+							priDos.append(candidato2)
+							break			
+				else:
+					priDos.append(candidato2)
+		elif evento["prioridad"]=="3":
+			for candidato3 in GenerarCandidatos(**evento):
+				if len(priTres)>0:
+					for idx,pos3 in enumerate(priTres):
+						if candidato3["hora_inicio"]<pos3["hora_inicio"]:
+							priTres.insert(idx,candidato3)
+							break
+						elif idx==len(priTres)-1:
+							priTres.append(candidato3)
+							break
+				else:
+					priTres.append(candidato3)
+	tempri.append(priTres)	
 	tempri.append(priDos)
-	tempri.append(priTres)		
+	tempri.append(priUno)	
 	return tempri
 
 eventos=IngresarEventos()
 tabla=TablaTemPri(*eventos)
 # Para ver de forma clara la tabla Tempri
-for x in tabla:
+for idx,x in enumerate(tabla):
 	for y in x:
-		print(y[0]["nombre"],len(y))
-	print("\n")	
+		print(y["hora_inicio"].strftime(FORMATO),">>>>",y["nombre"])
+	print("\n")
