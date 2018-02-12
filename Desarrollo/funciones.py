@@ -21,7 +21,8 @@ def IngresarEventos():
 				dic["hora_fin"]=datetime.strptime(evento.split(",")[7].split("\n")[0], FORMATO)
 			else:
 				dic["hora_fin"]=datetime.strptime(evento.split(",")[6], FORMATO)	# Si no tiene hora final, le asigno la hora 
-			eventos.append(dic)														# inicial para que se genere solo un candidato
+				dic["hora_fin"]+=timedelta(minutes=(int(dic["duracion"])))			# inicial + duracion para que se genere solo un candidato
+			eventos.append(dic)														
 	return eventos
 
 # Genero la lista del tamano correspondiente a la constante 
@@ -37,36 +38,35 @@ def ImprimirDia(*args):
 		print("%s:%s ==> %s"%(x["hora_inicio"].hour,x["hora_inicio"].minute,x["nombre"]))
 
 # Funcion para calcular el numero de candidatos de un evento | Retorna un entero			
-def CalcularCandidatos(**kwargs):
-	candidatos = abs((kwargs["hora_inicio"].hour*60 + kwargs["hora_inicio"].minute) - (kwargs["hora_fin"].hour*60 + kwargs["hora_fin"].minute - int(kwargs["duracion"])))/SEG_TEMP
+def CalcularCandidatos(**kwargs):	
+	candidatos = abs(((kwargs["hora_inicio"].hour*60) + kwargs["hora_inicio"].minute) - ((kwargs["hora_fin"].hour*60) + kwargs["hora_fin"].minute - int(kwargs["duracion"])))/SEG_TEMP
 	return int(candidatos+1)		
 
 # Genero una lista de diccionarios con todos los candidatos. Con la hora inicial modificada en cada candidato | Retorna una lista de diccionarios
 def GenerarCandidatos(**kwargs):
 	lista=[]
 	for x in range (0,CalcularCandidatos(**kwargs)):
-		dic=kwargs
+		dic=kwargs.copy()
 		if x==0:
 			lista.append(dic)
 		else:
-			print(dic["hora_inicio"] + timedelta(minutes=(SEG_TEMP*x)))					# El problema es que no se mantiene el valor "hora_inicio"
-			dic["hora_inicio"]= dic["hora_inicio"] + timedelta(minutes=(SEG_TEMP*x))	# original en kwargs, si no que se modifica en todos los dict  
-			lista.append(dic)															# de la lista 
-	print(kwargs)
+			dic["hora_inicio"]+=timedelta(minutes=(SEG_TEMP*x))	
+			lista.append(dic)	
+
 	return lista			
 
-# Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de diccionarios			
-def TablaTemPri(**kwargs):
+# Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de listas de diccionarios			
+def TablaTemPri(*args):                                                                      #(No me he repetido, es asi)
 	tempri=[]
 	priUno=[]
 	priDos=[]
 	priTres=[]
-	for evento in kwargs:
-		if evento["prioridad"]=="1":
+	for evento in args:
+		if evento["prioridad"]=="3":
 			priUno.append(GenerarCandidatos(**evento))
 		elif evento["prioridad"]=="2":
 			priDos.append(GenerarCandidatos(**evento))	
-		elif evento["prioridad"]=="3":
+		elif evento["prioridad"]=="1":
 			priTres.append(GenerarCandidatos(**evento))	
 	tempri.append(priUno)
 	tempri.append(priDos)
@@ -74,4 +74,9 @@ def TablaTemPri(**kwargs):
 	return tempri
 
 eventos=IngresarEventos()
-ImprimirDia(*GenerarCandidatos(**eventos[3]))
+tabla=TablaTemPri(*eventos)
+# Para ver de forma clara la tabla Tempri
+for x in tabla:
+	for y in x:
+		print(y[0]["nombre"],len(y))
+	print("\n")	
