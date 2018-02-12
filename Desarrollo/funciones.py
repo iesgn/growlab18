@@ -55,3 +55,7 @@ def TablaTemPri(*args,**kwargs):
 	tempri=[]
 	for evento in kwargs:
 		
+eventos=IngresarEventos()
+dia=GenerarTablaDia()
+TablaTempPri(*dia,*eventos)
+ImprimirDia(*dia)
