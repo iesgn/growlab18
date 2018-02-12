@@ -49,8 +49,10 @@ def GenerarCandidatos(**kwargs):
 		if x==0:
 			lista.append(dic)
 		else:
-			dic["hora_inicio"]+=timedelta(minutes=(SEG_TEMP*x))		# Esta claro que esto no funciona como quiero
-			lista.append(dic)
+			print(dic["hora_inicio"] + timedelta(minutes=(SEG_TEMP*x)))					# El problema es que no se mantiene el valor "hora_inicio"
+			dic["hora_inicio"]= dic["hora_inicio"] + timedelta(minutes=(SEG_TEMP*x))	# original en kwargs, si no que se modifica en todos los dict  
+			lista.append(dic)															# de la lista 
+	print(kwargs)
 	return lista			
 
 # Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de diccionarios			
