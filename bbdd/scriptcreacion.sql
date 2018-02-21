@@ -1,6 +1,6 @@
 CREATE TABLE USUARIOS
 (
-Email 		VARCHAR(),
+Email 		VARCHAR() UNIQUE,
 Usuario 	VARCHAR(10),
 Password 	DATE,
 PRIMARY KEY (Email)
