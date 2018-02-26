@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, date, time, timedelta
 
 SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 FORMATO = "%H:%M"		# Formato para la funcion datetime
@@ -28,8 +28,10 @@ def IngresarEventos():
 # Genero la lista del tamano correspondiente a la constante 
 def GenerarTablaDia():		
 	dia=[]
+	tiempo=datetime.strptime("00:00","%H:%M")
 	for x in range(int((60/SEG_TEMP)*24)):
-		dia.append(None)
+		tiempo+=timedelta(minutes=(SEG_TEMP))
+		dia.append(tiempo)
 	return dia
 
 # Funcion para imprimir la planificacion del dia	
@@ -102,11 +104,23 @@ def TablaTemPri(*args):
 	tempri.append(priDos)
 	tempri.append(priUno)	
 	return tempri
+def BusquedaProfunda(*args):
+	dia=GenerarTablaDia()
+	#for segmento in dia:
+
+
+#def SelecCandidato(*args):
 
 eventos=IngresarEventos()
 tabla=TablaTemPri(*eventos)
+
+print(GenerarTablaDia())
+
+
 # Para ver de forma clara la tabla Tempri
-for idx,x in enumerate(tabla):
-	for y in x:
-		print(y["hora_inicio"].strftime(FORMATO),">>>>",y["nombre"])
-	print("\n")
+#for idx,x in enumerate(tabla):
+	#for y in x:
+	#	print(y["hora_inicio"].strftime(FORMATO),">>>>",y["nombre"])
+	#print("\n")	
+
+# FUNCION BUSQUEDA_PROFUNDA, creo que la funcion deberia recorrer 
