@@ -1,3 +1,4 @@
+@import url(agenda.css);
 li a {
 	color: #666;
 }
@@ -14,9 +15,15 @@ a:hover {
     box-shadow: none;
 }
 .top {
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 11;
     padding-left: 2rem;
     padding-right: 2rem;
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 }
 .nav {
 	margin: 0 0 0 auto;
@@ -53,8 +60,8 @@ a:hover {
     color: #fff;
 }
 .principal {
+    margin-top: 3.7em;
     background: url(../img/fondo.png) no-repeat center fixed;
-	background-size:;
 }
 #footer {
 	background-color: #333;
@@ -83,12 +90,10 @@ a:hover {
     border-bottom: 2px solid #999;
     border-radius: 0;
     padding: 30px 0 8px 0;
-    margin: ;
 }
 #inputEmail:focus, #password:focus, #correctpassword:focus {
     border: none;
     border-bottom: 2px solid #333;
-    transition: 1s;
     box-shadow: none;
 }
 .btn.aceptar {
