@@ -31,7 +31,7 @@ def GenerarTablaDia():
 	tiempo=datetime.strptime("00:00","%H:%M")
 	for x in range(int((60/SEG_TEMP)*24)):
 		tiempo+=timedelta(minutes=(SEG_TEMP))
-		dia.append(tiempo)
+		dia.append(tiempo,None)
 	return dia
 
 # Funcion para imprimir la planificacion del dia	
@@ -106,10 +106,17 @@ def TablaTemPri(*args):
 	return tempri
 def BusquedaProfunda(*args):
 	dia=GenerarTablaDia()
-	#for segmento in dia:
-
-
-#def SelecCandidato(*args):
+	usado=[]
+	idx=0
+	for segmento in dia:
+		if segmento[1]==None:
+			candidato=SelecCandidato(*args,*usado)
+			if segmento==candidato["hora_inicio"]:
+				for x in range(0,int(candidato["duracion"])):
+					segmento.insert(idx,candidato)
+					usado.append(candidato["nombre"])
+					idx+=1						
+def SelecCandidato(*args,*args):
 
 eventos=IngresarEventos()
 tabla=TablaTemPri(*eventos)
