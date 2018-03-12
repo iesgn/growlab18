@@ -30,14 +30,17 @@ def GenerarTablaDia():
 	dia=[]
 	tiempo=datetime.strptime("00:00","%H:%M")
 	for x in range(int((60/SEG_TEMP)*24)):
+		dia.append([tiempo,None])
 		tiempo+=timedelta(minutes=(SEG_TEMP))
-		dia.append(tiempo,None)
 	return dia
 
 # Funcion para imprimir la planificacion del dia	
 def ImprimirDia(*args):
 	for x in args:
-		print("%s:%s ==> %s"%(x["hora_inicio"].hour,x["hora_inicio"].minute,x["nombre"]))
+		if x[1]==None:
+			print("%s ==> vacio"%x[0].strftime(FORMATO))
+		else:	
+			print("%s ==> %s"%(x[0].strftime(FORMATO),x[1]["nombre"]))
 
 # Funcion para calcular el numero de candidatos de un evento | Retorna un entero			
 def CalcularCandidatos(**kwargs):	
@@ -104,30 +107,26 @@ def TablaTemPri(*args):
 	tempri.append(priDos)
 	tempri.append(priUno)	
 	return tempri
-def BusquedaProfunda(*args):
+#	
+def BusquedaProfunda():
 	dia=GenerarTablaDia()
 	usado=[]
-	idx=0
-	for segmento in dia:
+	horario=dia.copy()
+	for idx,segmento in enumerate(dia):
 		if segmento[1]==None:
-			candidato=SelecCandidato(*args,*usado)
-			if segmento==candidato["hora_inicio"]:
-				for x in range(0,int(candidato["duracion"])):
-					segmento.insert(idx,candidato)
-					usado.append(candidato["nombre"])
-					idx+=1						
-def SelecCandidato(*args,*args):
+			candidato=SelecCandidato(segmento[0],*usado)
+			if candidato!=None:
+				usado.append(candidato["nombre"])	
+				for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
+					horario[idx+x].insert(1,candidato)					
+	return horario
+					
+def SelecCandidato(hora, *usado):
+	tempri=TablaTemPri(*IngresarEventos())
+	for candidatos in tempri:
+		for candidato in candidatos:
+			if candidato["nombre"] not in usado and candidato["hora_inicio"]==hora:
+				return candidato
 
-eventos=IngresarEventos()
-tabla=TablaTemPri(*eventos)
-
-print(GenerarTablaDia())
-
-
-# Para ver de forma clara la tabla Tempri
-#for idx,x in enumerate(tabla):
-	#for y in x:
-	#	print(y["hora_inicio"].strftime(FORMATO),">>>>",y["nombre"])
-	#print("\n")	
-
-# FUNCION BUSQUEDA_PROFUNDA, creo que la funcion deberia recorrer 
+horario=BusquedaProfunda()
+ImprimirDia(*horario)
