@@ -60,6 +60,21 @@ def GenerarCandidatos(**kwargs):
 
 	return lista			
 
+def Rellenar(*pri,**evento):
+	pri=list(pri)
+	for cand in GenerarCandidatos(**evento):
+		if len(pri)>0:
+			for idx,pos in enumerate(pri):
+				if cand["hora_inicio"]<pos["hora_inicio"]:
+					pri.insert(idx,cand)
+					break
+				elif idx==len(pri)-1:
+					pri.append(cand)
+					break
+		else:
+			pri.append(cand)	
+	return pri		
+
 # Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de diccionarios			
 def TablaTemPri(*args):                                                                     
 	tempri=[]
@@ -68,46 +83,17 @@ def TablaTemPri(*args):
 	priTres=[]
 	for evento in args:
 		if evento["prioridad"]=="1":
-			for candidato1 in GenerarCandidatos(**evento):
-				if len(priUno)>0:
-					for idx,pos1 in enumerate(priUno):
-						if candidato1["hora_inicio"]<pos1["hora_inicio"]:
-							priUno.insert(idx,candidato1)
-							break
-						elif idx==len(priUno)-1:
-							priUno.append(candidato1)
-							break			
-				else:
-					priUno.append(candidato1)		
+			priUno=Rellenar(*priUno,**evento)
 		elif evento["prioridad"]=="2":
-			for candidato2 in GenerarCandidatos(**evento):
-				if len(priDos)>0:
-					for idx,pos2 in enumerate(priDos):
-						if candidato2["hora_inicio"]<pos2["hora_inicio"]:
-							priDos.insert(idx,candidato2)
-							break
-						elif idx==len(priDos)-1:
-							priDos.append(candidato2)
-							break			
-				else:
-					priDos.append(candidato2)
+			priDos=Rellenar(*priDos,**evento)
 		elif evento["prioridad"]=="3":
-			for candidato3 in GenerarCandidatos(**evento):
-				if len(priTres)>0:
-					for idx,pos3 in enumerate(priTres):
-						if candidato3["hora_inicio"]<pos3["hora_inicio"]:
-							priTres.insert(idx,candidato3)
-							break
-						elif idx==len(priTres)-1:
-							priTres.append(candidato3)
-							break
-				else:
-					priTres.append(candidato3)
+			priTres=Rellenar(*priTres,**evento)
+
 	tempri.append(priTres)	
 	tempri.append(priDos)
 	tempri.append(priUno)	
 	return tempri
-#	
+	
 def BusquedaProfunda():
 	dia=GenerarTablaDia()
 	usado=[]
@@ -118,7 +104,7 @@ def BusquedaProfunda():
 			if candidato!=None:
 				usado.append(candidato["nombre"])	
 				for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
-					horario[idx+x].insert(1,candidato)					
+					horario[idx+x].insert(1,candidato)	
 	return horario
 					
 def SelecCandidato(hora, *usado):
