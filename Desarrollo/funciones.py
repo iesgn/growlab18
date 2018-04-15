@@ -48,8 +48,9 @@ def CalcularCandidatos(**kwargs):
 	return int(candidatos+1)		
 
 # Genero una lista de diccionarios con todos los candidatos. Con la hora inicial modificada en cada candidato | Retorna una lista de diccionarios
-def GenerarCandidatos(**kwargs):
+def GenerarCandidatos(*pri,**kwargs):
 	lista=[]
+	pri=list(pri)
 	for x in range (0,CalcularCandidatos(**kwargs)):
 		dic=kwargs.copy()
 		if x==0:
@@ -57,8 +58,16 @@ def GenerarCandidatos(**kwargs):
 		else:
 			dic["hora_inicio"]+=timedelta(minutes=(SEG_TEMP*x))	
 			lista.append(dic)	
-
-	return lista			
+	if len(pri)>0:	
+		for idz,z in enumerate(pri):
+			if z[0]["hora_inicio"]>lista[0]["hora_inicio"]:
+				pri.insert(idz,lista)
+				break
+		if lista not in pri:		
+			pri.append(lista)			
+	else:
+		pri.append(lista)			
+	return pri			
 
 # Rellena la lista con todos los candidatos ordenados por tiempo / prioridad | Retorna una lista de listas de diccionarios			
 def TablaTemPri(*args):                                                                     
@@ -68,11 +77,11 @@ def TablaTemPri(*args):
 	priTres=[]
 	for evento in args:
 		if evento["prioridad"]=="1":
-			priUno.append(GenerarCandidatos(**evento))
+			priUno=GenerarCandidatos(*priUno,**evento)
 		elif evento["prioridad"]=="2":
-			priDos.append(GenerarCandidatos(**evento))
+			priDos=GenerarCandidatos(*priDos,**evento)
 		elif evento["prioridad"]=="3":
-			priTres.append(GenerarCandidatos(**evento))
+			priTres=GenerarCandidatos(*priTres,**evento)
 
 	tempri.append(priTres)
 	tempri.append(priDos)

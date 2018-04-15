@@ -2,10 +2,10 @@ evento8,fijo,2,90,6/2/18,fecha_fin,14:00,22:00
 evento3,fijo,1,30,6/2/18,10/2/18,10:00,12:00
 evento11,diario,1,120,6/2/18,fecha_fin,15:00,21:00
 evento6,diario,3,30,6/2/18,fecha_fin,14:00,17:00
+evento10,diario,3,30,6/2/18,fecha_fin,20:00,23:00
+evento2,diario,3,360,6/2/18,fecha_fin,8:15,hora_fin
+evento9,fijo,3,90,6/2/18,fecha_fin,21:00,hora_fin
 evento4,fijo,2,60,6/2/18,fecha_fin,10:00,18:00
 evento5,fijo,3,40,6/2/18,fecha_fin,16:00,hora_fin
 evento7,semanal,2,120,6/2/18,fecha_fin,14:00,22:00
-evento2,diario,3,360,6/2/18,fecha_fin,8:15,hora_fin
-evento9,fijo,3,90,6/2/18,fecha_fin,21:00,hora_fin
-evento10,diario,3,30,6/2/18,fecha_fin,20:00,23:00
 evento1,diario,3,30,6/2/18,fecha_fin,7:15,7:45
