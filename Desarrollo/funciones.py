@@ -2,7 +2,8 @@ from datetime import datetime, date, time, timedelta
 
 SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 FORMATO = "%H:%M"		# Formato para la funcion datetime
-LOMASTARDE=True
+LOMASTARDE=False
+DESCANSO=0
 
 # Voy a hacer un fichero de texto con varios eventos para ahorrarme el escribirlo por pantalla
 # estructura del archivo: nombre, periodo, prioridad, duracion, fecha_inicio, fecha_fin, hora_inicio, hora_fin
@@ -40,6 +41,8 @@ def ImprimirDia(*args):
 	for x in args:
 		if x[1]==None:
 			print("%s ==> vacio"%x[0].strftime(FORMATO))
+		elif x[1]=="Descanso":
+			print("%s ==> Descanso"%x[0].strftime(FORMATO))
 		else:	
 			print("%s ==> %s"%(x[0].strftime(FORMATO),x[1]["nombre"]))
 
@@ -134,11 +137,17 @@ def BuscarSeg(*horario,**candidato):
 
 def Rellenar (seg,*horario,**candidato):
 	horario=list(horario)
-	for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
+	tope=int(int(candidato["duracion"])/SEG_TEMP)+1+int(DESCANSO/SEG_TEMP)
+	seg-=1
+	for x in range(0,tope):
 		if LOMASTARDE:
-			horario[seg-x].insert(1,candidato)	
+			seg-=1
 		else:
-			horario[seg+x].insert(1,candidato)
+			seg+=1
+		if x < tope-int(DESCANSO/SEG_TEMP):	
+			horario[seg].insert(1,candidato)
+		else:
+			horario[seg].insert(1,"Descanso")	
 	return horario		
 
 def Quitar (evento,*tempri):
@@ -149,7 +158,8 @@ def Quitar (evento,*tempri):
 	return tempri		
 
 def Comprobar (seg,*horario, **candidato):
-	for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
+	tope=int(int(candidato["duracion"])/SEG_TEMP)+1+int(DESCANSO/SEG_TEMP)
+	for x in range(0,tope):
 		if horario[seg+x][1]!=None and not LOMASTARDE:
 			return False
 		elif LOMASTARDE and horario[seg-x][1]!=None:
