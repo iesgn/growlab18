@@ -2,6 +2,7 @@ from datetime import datetime, date, time, timedelta
 
 SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 FORMATO = "%H:%M"		# Formato para la funcion datetime
+LOMASTARDE=True
 
 # Voy a hacer un fichero de texto con varios eventos para ahorrarme el escribirlo por pantalla
 # estructura del archivo: nombre, periodo, prioridad, duracion, fecha_inicio, fecha_fin, hora_inicio, hora_fin
@@ -87,28 +88,58 @@ def TablaTemPri(*args):
 	tempri.append(priDos)
 	tempri.append(priUno)
 	return tempri
+
+################################################################################################
+
+################################################################################################
 	
 def BusquedaProfunda(*tempri):
 	tempri=list(tempri)
-	dia=GenerarTablaDia()
-	horario=dia.copy()
 	error=[]
+	dia=GenerarTablaDia()
+	if LOMASTARDE:
+		dia.reverse()
+	horario=dia.copy()
+
 	for x in range(0,3):
-		for idx,segmento in enumerate(dia):
-			if segmento[1]==None:
-				candidato=SelecCandidato(segmento[0],*tempri[x])
-				if candidato!=None:
-					if Comprobar(idx,*horario,**candidato):	
-						for y in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
-							horario[idx+y].insert(1,candidato)	
-						tempri[x]=Quitar(candidato["nombre"],*tempri[x])	
-	return horario, tempri
-					
-def SelecCandidato (hora, *tempri):
-	for idx,bloque in enumerate(tempri):
-		for idy,candidato in enumerate(bloque):
-			if candidato["hora_inicio"]==hora:
-				return candidato
+		while len(tempri[x])>0:
+			candidato,estado=SelecCandidato(error,horario,tempri[x])
+			if estado:
+				seg=BuscarSeg(*horario,**candidato)
+				horario=Rellenar(seg,*horario,**candidato)	
+				tempri[x]=Quitar(candidato["nombre"],*tempri[x])
+			else:
+				error.append(candidato)
+				tempri[x]=Quitar(candidato["nombre"],*tempri[x])	
+
+	return horario, error
+
+def SelecCandidato (error,horario, tempri):
+	for bloque in tempri:
+		if len(bloque)==1:
+			return bloque[0], True		
+	for idx,evento in enumerate(tempri):
+		if LOMASTARDE:
+			evento.reverse()
+		for idy,candidato in enumerate(evento):
+			seg=BuscarSeg(*horario,**candidato)
+			if Comprobar(seg,*horario,**candidato):
+				return candidato, True
+		return candidato, False
+
+def BuscarSeg(*horario,**candidato):
+	for idx,x in enumerate(horario):
+		if x[0]==candidato["hora_inicio"]:
+			return idx
+
+def Rellenar (seg,*horario,**candidato):
+	horario=list(horario)
+	for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
+		if LOMASTARDE:
+			horario[seg-x].insert(1,candidato)	
+		else:
+			horario[seg+x].insert(1,candidato)
+	return horario		
 
 def Quitar (evento,*tempri):
 	tempri=list(tempri)
@@ -119,35 +150,22 @@ def Quitar (evento,*tempri):
 
 def Comprobar (seg,*horario, **candidato):
 	for x in range(0,int(int(candidato["duracion"])/SEG_TEMP)+1):
-		if horario[seg+x][1]!=None:
+		if horario[seg+x][1]!=None and not LOMASTARDE:
 			return False
+		elif LOMASTARDE and horario[seg-x][1]!=None:
+			return False	
 	return True
 
-def Conflictos (horario, tempri):
-	error=[]
-	for bloque in tempri:
-		for idx,segmento in enumerate(horario):
-			if segmento[1]!=None:
-				candidato=SelecCandidato(segmento[0],*bloque)
-				if candidato!=None:
-					error=Coincidencias(segmento[1]["nombre"],*error,**candidato)
-	return error
-					
-def Coincidencias (conflicto,*error,**candidato):
-	error=list(error)
-	for x in error:
-		if x[0]==candidato["nombre"] and conflicto not in x[1]:
-			x[1].append(conflicto)
-			return error
-		elif x[0]==candidato["nombre"] and conflicto in x[1]:
-			return error	
-	error.append([candidato["nombre"],[conflicto]])
-	return error	
+def Conflictos (horario, error):
+	conflictos=[]
+	for evento in error:
+		return error					
 
 Tempri=TablaTemPri(*IngresarEventos())
-horario,Tempri=BusquedaProfunda(*Tempri)
-
+horario,error=BusquedaProfunda(*Tempri)
+if LOMASTARDE:
+	horario.reverse()
 ImprimirDia(*horario)
-error=Conflictos(horario,Tempri)
+error=Conflictos(horario,error)
 print(error)
 
