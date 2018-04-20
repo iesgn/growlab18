@@ -1,8 +1,8 @@
 import MySQLdb
 
 DB_HOST = 'localhost'
-DB_USER = 'usuario'
-DB_PASS = 'usuario'
+DB_USER = 'debian'
+DB_PASS = 'debian'
 DB_NAME = 'agenda'
 
 def run_query(query=''):
