@@ -104,9 +104,11 @@ def addeventos():
         if hf<hi:
             error="La hora final debe ser mayor que la inicial."
             return render_template("addeventos.html",datos=request.form,error=error)
-        run_query('insert into eventos values("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format(codigo,periodo,prioridad,session["email"],titulo,duracion,descripcion,fechaini,fechafin,horaini,horafin))
-            exito="Se ha creado el usuario correctamente. Inicia sesión para poder empezar a usar la mejor agenda del mundo :)"
-            return redirect("/eventos")
+        sql='insert into eventos (E_MAIL,TITULO,DURACION,DESCRIPCION,FECHAINI,FECHAFIN,HORAINI,HORAFIN,PERIODO,PRIORIDAD,MASTARDE) values("{}", "{}", {}, "{}", "{}", "{}", "{}", "{}", "{}", {}, "{}")'.format(session["email"],titulo,duracion,desc,fechaini,fechafin,horaini,horafin,periodo,prioridad,mastarde)
+        
+        run_query(sql)
+        
+        return redirect("/eventos")
         
 
 @app.route('/eventos/del/<cod>')
