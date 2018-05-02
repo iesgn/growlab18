@@ -1,6 +1,6 @@
 import MySQLdb
 
-DB_HOST = 'localhost'
+DB_HOST = '172.22.201.45'
 DB_USER = 'debian'
 DB_PASS = 'debian'
 DB_NAME = 'agenda'
