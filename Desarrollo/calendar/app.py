@@ -74,23 +74,14 @@ def eventos():
     return render_template("eventos.html")
 
 
-@app.route('/eventos/add')
+@app.route('/eventos/add', methods=['GET', 'POST'])
 def addeventos():
     # Visualiza una plantilla donde leemos los datos del evento
-    if request.method=="GET":
-        return render_template("addeventos.html")
-    else:
-        #Añado el evento a la BD
-        
-
-@app.route('/eventos/del/<cod>')
-def deleventos(cod):
-    # Borra el evento de la base de datos
-    pass
     if request.method=="GET":
         return render_template("addeventos.html",datos=None,error=None)
     else:
         #Añado el evento a la BD
+        print(request.form)
         titulo = request.form['titulo']
         desc = request.form['descripcion']
         duracion = request.form['duracion']
@@ -101,11 +92,19 @@ def deleventos(cod):
         fechafin = request.form['fechafin']
         horaini = request.form['horaini']
         horafin = request.form['horafin']
-        fi=datetime.datetime.strptime(fechaini, "%d/%m/%Y")
-        ff=datetime.datetime.strptime(fechafin, "%d/%m/%Y")
+        fi=datetime.datetime.strptime(fechaini, "%Y-%m-%d")
+        ff=datetime.datetime.strptime(fechafin, "%Y-%m-%d")
         if ff<fi:
             error="La fecha final debe ser mayor que la inicial."
             return render_template("addeventos.html",datos=request.form,error=error)
+
+        
+
+@app.route('/eventos/del/<cod>')
+def deleventos(cod):
+    # Borra el evento de la base de datos
+    pass
+
 
 
 #Calendario

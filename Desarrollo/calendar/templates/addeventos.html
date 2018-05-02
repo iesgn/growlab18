@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col-md-10">
 <h1>AGENDA INTELIGENTE</h1>
-  <form action="http://dit.gonzalonazareno.org/iesgn/resultado.php" method="GET">
+  <form action="/eventos/add" method="POST">
   <fieldset>
   <legend>NUEVO EVENTO</legend>
   <div class="form-group">
@@ -27,36 +27,35 @@
   </div>
   <div class="form-group">
     <label for="periodo">Periodicidad:</label> 
-      <SELECT class="form-control" id="period" value="periodo">
-        <OPTION>Diario</OPTION>
-        <OPTION>Fijo</OPTION>
-        <OPTION>Semanal</OPTION>
-        <OPTION>Mensual</OPTION>
-        <OPTION>Anual</OPTION>
-      </SELECT> <br/>
+      <select name="periodo" class="form-control" id="period">
+        <option value="D">Diario</option>
+        <option value="F">Fijo</option>
+        <option value="S">Semanal</option>
+        <option value="M">Mensual</option>
+      </select> <br/>
   </div>
   <div class="form-group">
     <label for="prioridad">Prioridad:</label> 
-      <SELECT class="form-control" id="priority" value="prioridad">
-        <OPTION>Alto</OPTION>
-        <OPTION>Medio</OPTION>
-        <OPTION>Bajo</OPTION>
-      </SELECT> <br/>
+      <select name="prioridad" class="form-control" id="priority">
+        <option value="3">Alto</option>
+        <option value="2">Medio</option>
+        <option value="1">Bajo</option>
+      </select> <br/>
   </div>
   <div class="form-group">
     <label for="mastarde">Más tarde:</label> <br/>
-      <input id="yes" type="radio" name="mastarde" value="mastarde" checked><label for="mastarde"> Sí</label>
-      <input id="no" type="radio" name="mastarde" value="mastarde"><label for="mastarde"> No</label><br/>
+      <input id="yes" type="radio" name="mastarde" value="True" checked><label for="mastarde"> Sí</label>
+      <input id="no" type="radio" name="mastarde" value="False"><label for="mastarde"> No</label><br/>
   </div>
   <div class="form-group">
     <label for="fechaini">Fecha Inicio:</label>
-      <input id="dateini" type="date" value="fechaini"> <br/>
+      <input id="dateini" type="date" name="fechaini"/> <br/>
     <label for="fechafin">Fecha Fin:</label>
-      <input id="datefin" type="date" value="fechafin"> <br/>
+      <input id="datefin" type="date" name="fechafin"/> <br/>
     <label for="horaini">Hora Inicio:</label>
-      <input id="timeini" type="time" value="horaini"> <br/>
+      <input id="timeini" type="time" name="horaini"/> <br/>
     <label for="horafin">Hora Fin:</label>
-      <input id="timefin" type="time" value="horafin"> <br/>
+      <input id="timefin" type="time" name="horafin"/> <br/>
   </div>
   </fieldset>
     <button type="submit" class="btn btn-primary">Crear Evento</button>
