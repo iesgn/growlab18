@@ -18,11 +18,15 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ evento[4] }}</h5>
-    <p class="card-text">Fecha y hora de inicio: {{ evento[5] }} {{ evento[7] }}</p>
-    <p class="card-text">Fecha y hora de fin: {{ evento[6] }} {{ evento[8] }}</p>
-    <p class="card-text">Duración: {{ evento[3] }}</p>
-    <p class="card-text">Periodicidad: {% if evento[9] == 'F' %}Fijo{% elif evento[9] == 'D' %}Diario{% elif evento[9] == 'S' %}Semanal{% elif evento[9] == 'M' %}Mensual{% endif %}</p>
-    <a href="#" class="btn btn-primary">Editar</a>
+    <ul>
+      <li><p class="card-text">Fecha inicio: {{ evento[5] }} </p></li>
+      <li><p class="card-text">Fecha final: {{ evento[6] }} </p></li>
+      <li><p class="card-text">Hora inicio:  {{ evento[7] }}</p></li>
+      <li><p class="card-text">Hora final:  {{ evento[8] }}</p></li>
+      <li><p class="card-text">Duración: {{ evento[3] }}</p></li>
+      <li><p class="card-text">Periodicidad: {% if evento[9] == 'F' %}Fijo{% elif evento[9] == 'D' %}Diario{% elif evento[9] == 'S' %}Semanal{% elif  evento[9] == 'M' %}Mensual{% endif %}</p></li>
+    </ul>
+    <a href="/eventos/edit/{{ evento[0] }}" class="btn btn-primary">Editar</a>
     <a href="/eventos/del/{{ evento[0] }}" class="btn btn-primary">Borrar</a>
   </div>
 </div>

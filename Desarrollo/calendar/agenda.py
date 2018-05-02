@@ -1,11 +1,33 @@
 from datetime import datetime, date, time, timedelta
+from basedatos import run_query
 
 SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 HORA = "%H:%M"			# Formato para la funcion datetime
 FECHA= "%d/%m/%Y"
+FECHA2= "%Y-%m-%d"
 DESCANSO=0
 FechaHoy=datetime.strptime("2/5/2018", FECHA)
 
+
+def IngresarEventos2(email):
+	sql='select * from eventos where e_mail="{}"'.format(email)
+	lista_eventos=run_query(sql)
+	eventos=[]
+	
+	for evento in lista_eventos:
+			dic={}
+			dic["nombre"]=evento[2]
+			dic["periodo"]=evento[9]
+			dic["prioridad"]=str(evento[10])
+			dic["duracion"]=str(evento[3])
+			dic["fecha_inicio"]=datetime.strptime(evento[5], FECHA2)
+			dic["fecha_fin"]=datetime.strptime(evento[6], FECHA2)
+			dic["hora_inicio"]=datetime.strptime(evento[7], HORA)
+			dic["hora_fin"]=datetime.strptime(evento[8], HORA)
+			dic["lomastarde"]=evento[11]
+			eventos.append(dic)
+														
+	return eventos
 # Voy a hacer un fichero de texto con varios eventos para ahorrarme el escribirlo por pantalla
 # estructura del archivo: nombre, periodo, prioridad, duracion, fecha_inicio, fecha_fin, hora_inicio, hora_fin
 def IngresarEventos():
@@ -182,7 +204,8 @@ def Conflictos (horario,evento):
 	return conflictos
 			
 if __name__ == '__main__':
-	eventos=SelecEventos(*IngresarEventos())
+	eventos=SelecEventos(*IngresarEventos2("josedom24@gmail.com"))
+	#eventos=SelecEventos(*IngresarEventos())
 	Tempri=TablaTemPri(*eventos)
 	horario,error=BusquedaProfunda(*Tempri)
 	ImprimirDia(*horario)

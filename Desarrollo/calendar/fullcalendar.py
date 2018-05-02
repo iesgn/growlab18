@@ -13,31 +13,31 @@ def rango_fechas(desde, hasta):
 
 
 
-def geteventos(finicio,ffinal):
+def geteventos(finicio,ffinal,email):
 	FI=datetime.datetime.strptime(finicio, "%Y-%m-%d")
 	FF=datetime.datetime.strptime(ffinal, "%Y-%m-%d")	
-	FI=datetime.datetime.strptime("2018-05-02", "%Y-%m-%d")	
-	FF=datetime.datetime.strptime("2018-05-03", "%Y-%m-%d")
+
 	horarios={}
 	errores={}
 	fechas = rango_fechas(FI,FF)
+	alleventos=agenda.IngresarEventos2(email)
 	for fecha in fechas:
 		agenda.FechaHoy=fecha
-		eventos=agenda.SelecEventos(*agenda.IngresarEventos())
-		Tempri=agenda.TablaTemPri(*eventos)
+		#programacion=agenda.SelecEventos(*agenda.IngresarEventos())
+		programacion=agenda.SelecEventos(*alleventos)	
+		Tempri=agenda.TablaTemPri(*programacion)
 		horario,error=agenda.BusquedaProfunda(*Tempri)
 		horarios[fecha.strftime("%Y-%m-%d")]=horario	
 		errores[fecha.strftime("%Y-%m-%d")]=error
 
-	
-	eventos=[]			#para que? Quieres esta lista para hacer la pagina eventos?
+	eventos=[]			
 	for fecha,horario in horarios.items(): #que te da horarios.items()?
 		for tiempo in horario:
 			if tiempo[1] and tiempo[1] not in eventos: 
 				eventos.append((tiempo[0],tiempo[1]["nombre"],fecha))
-				print((tiempo[0],tiempo[1]["nombre"],fecha))	
+				
 
-	
+	print(eventos)
 	events=[]
 	for fecha in fechas:
 		for evento in set(list(e[1] for e in eventos if e[2]==fecha.strftime("%Y-%m-%d"))):
@@ -46,7 +46,6 @@ def geteventos(finicio,ffinal):
 			new_event["start"]= [e[2] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][0]+"T"+[e[0] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][0].strftime("%H:%M:%S")
 			new_event["end"]= [e[2] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][-1]+"T"+[e[0] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][-1].strftime("%H:%M:%S")
 			events.append(new_event)
-	print(events)
 	return events, errores
 	
 

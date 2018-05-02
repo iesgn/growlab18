@@ -72,65 +72,142 @@ def logout():
 
 @app.route('/eventos')
 def eventos():
-    # Visualiza una plantilla donde enviamos todos los eventos del usuario registrado
-    datos = run_query('select * from eventos where e_mail="{}"'.format(session['email']))
-    return render_template("eventos.html", datos = datos)
+    #No autorizo si no hay un usuario logueado
+    if not "usuario" in session:
+        return redirect('/login')
+    else:
+        # Visualiza una plantilla donde enviamos todos los eventos del usuario registrado
+        datos = run_query('select * from eventos where e_mail="{}"'.format(session['email']))
+        return render_template("eventos.html", datos = datos)
 
 
 
 @app.route('/eventos/add', methods=['GET', 'POST'])
 def addeventos():
-    # Visualiza una plantilla donde leemos los datos del evento
-    if request.method=="GET":
-        return render_template("addeventos.html",datos=None,error=None)
+    #No autorizo si no hay un usuario logueado
+    if not "usuario" in session:
+        return redirect('/login')
     else:
-        #Añado el evento a la BD
-        print(request.form)
-        titulo = request.form['titulo']
-        desc = request.form['descripcion']
-        duracion = request.form['duracion']
-        periodo = request.form['periodo']
-        prioridad = request.form['prioridad']
-        mastarde = request.form['mastarde']
-        fechaini = request.form['fechaini']
-        fechafin = request.form['fechafin']
-        horaini = request.form['horaini']
-        horafin = request.form['horafin']
-        fi=datetime.datetime.strptime(fechaini, "%Y-%m-%d")
-        ff=datetime.datetime.strptime(fechafin, "%Y-%m-%d")
-        hi=datetime.datetime.strptime(horaini, "%H:%M")
-        hf=datetime.datetime.strptime(horafin, "%H:%M")
-        if ff<fi:
-            error="La fecha final debe ser mayor que la inicial."
-            return render_template("addeventos.html",datos=request.form,error=error)
-        if hf<hi:
-            error="La hora final debe ser mayor que la inicial."
-            return render_template("addeventos.html",datos=request.form,error=error)
-        sql='insert into eventos (E_MAIL,TITULO,DURACION,DESCRIPCION,FECHAINI,FECHAFIN,HORAINI,HORAFIN,PERIODO,PRIORIDAD,MASTARDE) values("{}", "{}", {}, "{}", "{}", "{}", "{}", "{}", "{}", {}, "{}")'.format(session["email"],titulo,duracion,desc,fechaini,fechafin,horaini,horafin,periodo,prioridad,mastarde)
-        
-        run_query(sql)
-        
-        return redirect("/eventos")
-        
+        # Visualiza una plantilla donde leemos los datos del evento
+        if request.method=="GET":
+            return render_template("addeventos.html",datos=None,error=None,boton="Crear Evento",url="/eventos/add")
+        else:
+            #Añado el evento a la BD
+           
+            titulo = request.form['titulo']
+            desc = request.form['descripcion']
+            periodo = request.form['periodo']
+            duracion = request.form['duracion']
+            prioridad = request.form['prioridad']
+            mastarde = request.form['mastarde']
+            fechaini = request.form['fechaini']
+            fechafin = request.form['fechafin']
+            horaini = request.form['horaini']
+            horafin = request.form['horafin']
+            fi=datetime.datetime.strptime(fechaini, "%Y-%m-%d")
+            ff=datetime.datetime.strptime(fechafin, "%Y-%m-%d")
+            hi=datetime.datetime.strptime(horaini, "%H:%M")
+            hf=datetime.datetime.strptime(horafin, "%H:%M")
+            if ff<fi:
+                error="La fecha final debe ser mayor que la inicial."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Crear Evento",url="/eventos/add")
+            if hf<hi:
+                error="La hora final debe ser mayor que la inicial."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Crear Evento",url="/eventos/add")
+            if hi.minute%5!=0 or hf.minute%5!=0:
+                error="Las horas deben ser múltiplos de 5 minútos."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Crear Evento",url="/eventos/add")
+            
+            sql='insert into eventos (E_MAIL,TITULO,DURACION,DESCRIPCION,FECHAINI,FECHAFIN,HORAINI,HORAFIN,PERIODO,PRIORIDAD,MASTARDE) values("{}", "{}", {}, "{}", "{}", "{}", "{}", "{}", "{}", {}, "{}")'.format(session["email"],titulo,duracion,desc,fechaini,fechafin,horaini,horafin,periodo,prioridad,mastarde)
+            
+            run_query(sql)
+            
+            return redirect("/eventos")
+            
 
 @app.route('/eventos/del/<cod>')
 def deleventos(cod):
-    # Borra el evento de la base de datos
-    pass
+    #No autorizo si no hay un usuario logueado
+    if not "usuario" in session:
+        return redirect('/login')
+    else:
+        # Borra el evento de la base de datos
+        sql='delete from eventos where codigo={}'.format(cod)
+        run_query(sql)
+        return redirect("/eventos")
 
+@app.route('/eventos/edit/<cod>', methods=['GET', 'POST'])
+def editeventos(cod):
+    #No autorizo si no hay un usuario logueado
+    if not "usuario" in session:
+        return redirect('/login')
+    else:
+        if request.method=="GET":
+            # Borra el evento de la base de datos
+            sql='select * from eventos where codigo={}'.format(cod)
+            res=run_query(sql)
+            res=res[0]
+            datos={}
+            datos["titulo"] = res[2]
+            datos["desc"] = res[4]
+            datos["periodo"] = res[9]
+            datos["duracion"] = res[3]
+            datos["prioridad"] = res[10]
+            datos["mastarde"] = res[11]
+            datos["fechaini"] = res[5]
+            datos["fechafin"] = res[6]
+            datos["horaini"] = res[7]
+            datos["horafin"] = res[8]
+            
+            return render_template("addeventos.html",datos=datos,error=None,boton="Modificar Evento",url="/eventos/edit/"+cod)    
+        else:
+            #Añado el evento a la BD
+           
+            titulo = request.form['titulo']
+            desc = request.form['descripcion']
+            periodo = request.form['periodo']
+            duracion = request.form['duracion']
+            prioridad = request.form['prioridad']
+            mastarde = request.form['mastarde']
+            fechaini = request.form['fechaini']
+            fechafin = request.form['fechafin']
+            horaini = request.form['horaini']
+            horafin = request.form['horafin']
+            fi=datetime.datetime.strptime(fechaini, "%Y-%m-%d")
+            ff=datetime.datetime.strptime(fechafin, "%Y-%m-%d")
+            hi=datetime.datetime.strptime(horaini, "%H:%M")
+            hf=datetime.datetime.strptime(horafin, "%H:%M")
+            if ff<fi:
+                error="La fecha final debe ser mayor que la inicial."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Modificar Evento",url="/eventos/edit/"+cod)
+            if hf<hi:
+                error="La hora final debe ser mayor que la inicial."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Modificar Evento",url="/eventos/edit/"+cod)
+            if hi.minute%5!=0 or hf.minute%5!=0:
+                error="Las horas deben ser múltiplos de 5 minútos."
+                return render_template("addeventos.html",datos=request.form,error=error,boton="Modificar Evento",url="/eventos/edit/"+cod)
+            
+            sql='update eventos set TITULO="{}",DURACION="{}",DESCRIPCION="{}",FECHAINI="{}",FECHAFIN="{}",HORAINI="{}",HORAFIN="{}",PERIODO="{}",PRIORIDAD={},MASTARDE="{}" where codigo="{}"'.format(titulo,duracion,desc,fechaini,fechafin,horaini,horafin,periodo,prioridad,mastarde,cod)
+            run_query(sql)
+            
+            return redirect("/eventos")
 
 
 #Calendario
 
 @app.route('/calendar')
 def calendar():
-    return render_template("agenda.html")
+    #No autorizo si no hay un usuario logueado
+    if not "usuario" in session:
+        return redirect('/login')
+    else:
+        return render_template("agenda.html")
 
 @app.route('/data')
 def return_data():
     finicio = request.args.get('start', '')
     ffinal = request.args.get('end', '')
-    events,errores  =fullcalendar.geteventos(finicio,ffinal)  
+    events,errores  =fullcalendar.geteventos(finicio,ffinal,session["email"])  
     return json.dumps(events)
 
 
