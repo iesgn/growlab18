@@ -20,7 +20,7 @@ def login():
         #Busco en la base de datos y si existe usuario y contraseña, inicio la sesión
         pass
  
-@app.route('/registro')
+@app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method=="GET":
         return render_template("registro.html")
