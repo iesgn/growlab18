@@ -20,11 +20,18 @@ def login():
         #Busco en la base de datos y si existe usuario y contraseña, inicio la sesión
         pass
  
-@app.route('/registro')
+@app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method=="GET":
-        return render_template("registro.html")
+        return render_template("registro.html",datos=None,error=None)
     else:
+        usuario = request.form['usuario']
+        email = request.form['email']
+        pass1 = request.form['pass1'] 
+        pass2 = request.form['pass2']
+        if pass1!=pass2:
+            error="Las contraseñas no coinciden."
+            return render_template("registro.html",datos=request.form,error=error)   
         #Compruebo que el usuario no exista.
         #Si no existe lo añado a la BD
         pass

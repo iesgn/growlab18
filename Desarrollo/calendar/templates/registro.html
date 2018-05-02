@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br/>
+<br/>
+<br/>
+<div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-10">
+<h1>Registro</h1>
+{%if error%}
+<div class="alert alert-danger" role="alert">
+  {{error}}
+</div>
+{%endif%}
+<form action="/registro" method="post">
+  <div class="form-row">
+    <div class="col-md-10 mb-3">
+      <label for="validationDefaultUsername">Usuario</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend2">@</span>
+        </div>
+        <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Usuario" aria-describedby="inputGroupPrepend2" name="usuario" value="{{datos["usuario"]}}" required>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-10 mb-3">
+      <label for="exampleInputEmail1">Email</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Introduce tu email" name="email" value="{{datos["email"]}}">
+      <small id="emailHelp" class="form-text text-muted">No compartiremos tu email con nadie.</small>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-10 mb-3">
+      <label for="validationDefault03">Introduce tu contraseña</label>
+      <input type="password" class="form-control" id="validationDefault03" placeholder="Contraseña" name="pass1" required>
+      <small id="passHelp" class="form-text text-muted">Tu contraseña debe tener al menos 6 caracteres, contener letras y números y no tener espacios.</small>
+      <label for="validationDefault03"></label>
+      <input type="password" class="form-control" id="validationDefault03" placeholder="Vuelve a introducir tu contraseña" name="pass2" required>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">Enviar</button>
+</form>
+    <br/>
+
+</div>
+</div>
+</div>
+{% endblock %}
+{%block bootstrap_js%}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </body>
+{%endblock%}
