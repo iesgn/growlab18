@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template,request,redirect,session
+from basedatos import run_query
 import json
 import datetime
 import fullcalendar
@@ -29,9 +30,21 @@ def registro():
         email = request.form['email']
         pass1 = request.form['pass1'] 
         pass2 = request.form['pass2']
+        con_user=run_query('select count(*) from usuarios where usuario="{}"'.format(usuario))
+        con_email=run_query('select count(*) from usuarios where e_mail="{}"'.format(email))
+        print(con_user[0][0])
+        print(con_email[0][0])
         if pass1!=pass2:
             error="Las contraseñas no coinciden."
-            return render_template("registro.html",datos=request.form,error=error)   
+            return render_template("registro.html",datos=request.form,error=error)
+        elif con_user[0][0]!=0:
+            error="El usuario ya existe en la base de datos."
+            return render_template("registro.html",datos=request.form,error=error)
+        elif con_email[0][0] != 0:
+            error="El email ya existe en la base de datos."
+            return render_template("registro.html",datos=request.form,error=error)
+        else:
+            run_query('insert into usuarios values("{}", "{}", "{}")'.format(email, usuario, pass1))
         #Compruebo que el usuario no exista.
         #Si no existe lo añado a la BD
         pass
