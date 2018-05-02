@@ -73,7 +73,9 @@ def logout():
 @app.route('/eventos')
 def eventos():
     # Visualiza una plantilla donde enviamos todos los eventos del usuario registrado
+    datos = run_query('select * from eventos where email="{}"'.format(session['email']))
     return render_template("eventos.html")
+
 
 
 @app.route('/eventos/add', methods=['GET', 'POST'])
