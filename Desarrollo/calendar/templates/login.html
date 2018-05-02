@@ -17,10 +17,15 @@
   </head>
 
   <body class="text-center">
-    <form class="form-signin">
+    <form class="form-signin" action="/login" method="post">
     {%if exito%}
     <div class="alert alert-success" role="alert">
       {{ exito }}
+    </div>
+    {%endif%}
+    {%if error%}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
     </div>
     {%endif%}
       <img class="mb-4" src="/static/img/bootstrap-solid.svg" alt="" width="72" height="72">

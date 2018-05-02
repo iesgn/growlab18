@@ -13,16 +13,23 @@ def inicio():
 
 ##Usuarios
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method=="GET":
-          return render_template("login.html", exito=None)
+          return render_template("login.html", exito=None,error=None)
     else:
-          email = request.form['email']
-          pass1 = request.form['pass1'] 
-          con_login=run_query('select usuario from usuarios where e_mail="{}" and contraseña="{}"'.format(email,pass1))
+        email = request.form['email']
+        pass1 = request.form['pass1'] 
+        con_login=run_query('select usuario from usuarios where e_mail="{}" and contraseña="{}"'.format(email,pass1))
         #Busco en la base de datos y si existe usuario y contraseña, inicio la sesión
-        pass
+        
+        if con_login!=():
+            session["usuario"]=con_login[0][0]
+            return redirect("/")
+        else:
+            error="Datos incorrectos."
+            return render_template("login.html", exito=None,error=error)
+
  
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
