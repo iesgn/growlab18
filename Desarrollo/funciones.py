@@ -4,13 +4,13 @@ SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 HORA = "%H:%M"			# Formato para la funcion datetime
 FECHA= "%d/%m/%Y"
 DESCANSO=0
-FechaHoy=datetime.strptime("20/4/2018", FECHA)
+FechaHoy=datetime.strptime("6/2/2018", FECHA)
 
 # Voy a hacer un fichero de texto con varios eventos para ahorrarme el escribirlo por pantalla
 # estructura del archivo: nombre, periodo, prioridad, duracion, fecha_inicio, fecha_fin, hora_inicio, hora_fin
 def IngresarEventos():
 	eventos=[]
-	with open ("eventos2.txt","r") as text: 
+	with open ("eventos.txt","r") as text: 
 		for evento in text:
 			dic={}
 			dic["nombre"]=evento.split(",")[0]
@@ -130,16 +130,16 @@ def BusquedaProfunda(*tempri):
 					if candidato["lomastarde"]:
 						seg=conflicto[1]-1
 					else:
-						seg=conflicto[1]+1	
-					print(conflicto)	
+						seg=conflicto[1]+1		
 					if len(GenerarCandidatos(**conflicto[0]))>1 and Comprobar(seg,*horario,**conflicto[0]):
 						Borrar(conflicto[1],*horario,**conflicto[0])
 						Rellenar(seg,*horario,**conflicto[0]) 
 						break
-					if idz == len(conflictos):
-						for idx,x in enumerate(tempri):
-							if x in GenerarCandidatos(**candidato):
-								error.append(tempri.pop(idx))	
+					if idz == len(conflictos)-1:
+						for idu,u in enumerate(tempri[x]):
+							if u in GenerarCandidatos(**candidato):
+								print(idu)
+								error.append(tempri[x].pop(idu))		
 	return horario, error
 
 def SelecCandidato (horario, tempri):
@@ -190,6 +190,4 @@ eventos=SelecEventos(*IngresarEventos())
 Tempri=TablaTemPri(*eventos)
 horario,error=BusquedaProfunda(*Tempri)
 ImprimirDia(*horario)
-error=Conflictos(horario,error)
 print(error)
-

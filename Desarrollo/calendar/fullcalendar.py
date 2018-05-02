@@ -18,7 +18,7 @@ def geteventos(finicio,ffinal):
 	FF=datetime.datetime.strptime(ffinal, "%Y-%m-%d")	
 
 	horarios={}
-	
+	errores={}
 	fechas = rango_fechas(FI,FF)
 	for fecha in fechas:
 		agenda.FechaHoy=fecha
@@ -26,7 +26,7 @@ def geteventos(finicio,ffinal):
 		Tempri=agenda.TablaTemPri(*eventos)
 		horario,error=agenda.BusquedaProfunda(*Tempri)
 		horarios[fecha.strftime("%Y-%m-%d")]=horario	
-
+		errores[fecha.strftime("%Y-%m-%d")]=error
 	#	
 
 	eventos=[]
@@ -44,7 +44,7 @@ def geteventos(finicio,ffinal):
 			new_event["start"]= [e[2] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][0]+"T"+[e[0] for e in eventos if e[1]==evento][0].strftime("%H:%M:%S")
 			new_event["end"]= [e[2] for e in eventos if e[1]==evento and e[2]==fecha.strftime("%Y-%m-%d")][-1]+"T"+[e[0] for e in eventos if e[1]==evento][-1].strftime("%H:%M:%S")
 			events.append(new_event)
-	return events
+	return events, errores
 	
 
 

@@ -68,7 +68,7 @@ def calendar():
 def return_data():
     finicio = request.args.get('start', '')
     ffinal = request.args.get('end', '')
-    events=fullcalendar.geteventos(finicio,ffinal)  
+    events,errores  =fullcalendar.geteventos(finicio,ffinal)  
     return json.dumps(events)
 
 
