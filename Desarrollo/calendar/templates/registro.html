@@ -8,11 +8,11 @@
 <div class="container">
         <!-- Example row of columns -->
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-10">
 <h1>Registro</h1>
 <form>
   <div class="form-row">
-    <div class="col-md-8 mb-3">
+    <div class="col-md-10 mb-3">
       <label for="validationDefaultUsername">Usuario</label>
       <div class="input-group">
         <div class="input-group-prepend">
@@ -23,9 +23,17 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-8 mb-3">
+    <div class="col-md-10 mb-3">
+      <label for="exampleInputEmail1">Email</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Introduce tu email">
+      <small id="emailHelp" class="form-text text-muted">No compartiremos tu email con nadie.</small>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-10 mb-3">
       <label for="validationDefault03">Introduce tu contraseña</label>
       <input type="text" class="form-control" id="validationDefault03" placeholder="Contraseña" name="pass1" required>
+      <small id="passHelp" class="form-text text-muted">Tu contraseña debe tener al menos 6 caracteres, contener letras y números y no tener espacios.</small>
       <label for="validationDefault03"></label>
       <input type="text" class="form-control" id="validationDefault03" placeholder="Vuelve a introducir tu contraseña" name="pass2" required>
     </div>
