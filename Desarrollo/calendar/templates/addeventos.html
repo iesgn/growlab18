@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br/>
+<br/>
+<br/>
+<div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-10">
+<h1>AGENDA INTELIGENTE</h1>
+  <form action="http://dit.gonzalonazareno.org/iesgn/resultado.php" method="GET">
+  <fieldset>
+  <legend>NUEVO EVENTO</legend>
+  <div class="form-group">
+    <label for="titulo">Titulo</label>
+      <input class="form-control" id="tittle" type="text" name="titulo" maxlength="50"> <br/>
+  </div>
+  <div class="form-group">
+    <label for="descripcion">Descripcion:</label>
+      <input class="form-control" id="description" type="text" name="descripcion" maxlength="60"> <br/>
+  </div>
+  <div class="form-group">
+    <label for="duracion">Duración</label>
+      <input class="form-control" id="duration" type="number" name="duracion" maxlength="8"> <br/>
+  </div>
+  <div class="form-group">
+    <label for="periodo">Periodicidad:</label> 
+      <SELECT class="form-control" id="period" value="periodo">
+        <OPTION>Diario</OPTION>
+        <OPTION>Fijo</OPTION>
+        <OPTION>Semanal</OPTION>
+        <OPTION>Mensual</OPTION>
+        <OPTION>Anual</OPTION>
+      </SELECT> <br/>
+  </div>
+  <div class="form-group">
+    <label for="prioridad">Prioridad:</label> 
+      <SELECT class="form-control" id="priority" value="prioridad">
+        <OPTION>Alto</OPTION>
+        <OPTION>Medio</OPTION>
+        <OPTION>Bajo</OPTION>
+      </SELECT> <br/>
+  </div>
+  <div class="form-group">
+    <label for="mastarde">Más tarde:</label> <br/>
+      <input id="yes" type="radio" name="mastarde" value="mastarde" checked><label for="mastarde"> Sí</label>
+      <input id="no" type="radio" name="mastarde" value="mastarde"><label for="mastarde"> No</label><br/>
+  </div>
+  <div class="form-group">
+    <label for="fechaini">Fecha Inicio:</label>
+      <input id="dateini" type="date" value="fechaini"> <br/>
+    <label for="fechafin">Fecha Fin:</label>
+      <input id="datefin" type="date" value="fechafin"> <br/>
+    <label for="horaini">Hora Inicio:</label>
+      <input id="timeini" type="time" value="horaini"> <br/>
+    <label for="horafin">Hora Fin:</label>
+      <input id="timefin" type="time" value="horafin"> <br/>
+  </div>
+  </fieldset>
+    <button type="submit" class="btn btn-primary">Crear Evento</button>
+  </form>
+
+
+</div>
+</div>
+</div>
+{% endblock %}
+{%block bootstrap_js%}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </body>
+{%endblock%}
