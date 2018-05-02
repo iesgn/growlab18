@@ -10,12 +10,17 @@
         <div class="row">
           <div class="col-md-10">
 <h1>AGENDA INTELIGENTE</h1>
+{%if error%}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+    {%endif%}
   <form action="/eventos/add" method="POST">
   <fieldset>
   <legend>NUEVO EVENTO</legend>
   <div class="form-group">
     <label for="titulo">Titulo</label>
-      <input class="form-control" id="tittle" type="text" name="titulo" maxlength="50"> <br/>
+      <input class="form-control" id="tittle" type="text" name="titulo" maxlength="50" required> <br/>
   </div>
   <div class="form-group">
     <label for="descripcion">Descripcion:</label>
@@ -23,7 +28,7 @@
   </div>
   <div class="form-group">
     <label for="duracion">Duración</label>
-      <input class="form-control" id="duration" type="number" name="duracion" maxlength="8"> <br/>
+      <input class="form-control" id="duration" type="number" name="duracion" maxlength="8" required> <br/>
   </div>
   <div class="form-group">
     <label for="periodo">Periodicidad:</label> 
@@ -49,13 +54,13 @@
   </div>
   <div class="form-group">
     <label for="fechaini">Fecha Inicio:</label>
-      <input id="dateini" type="date" name="fechaini"/> <br/>
+      <input id="dateini" type="date" name="fechaini" required/> <br/>
     <label for="fechafin">Fecha Fin:</label>
-      <input id="datefin" type="date" name="fechafin"/> <br/>
+      <input id="datefin" type="date" name="fechafin" required/> <br/>
     <label for="horaini">Hora Inicio:</label>
-      <input id="timeini" type="time" name="horaini"/> <br/>
+      <input id="timeini" type="time" name="horaini" required/> <br/>
     <label for="horafin">Hora Fin:</label>
-      <input id="timefin" type="time" name="horafin"/> <br/>
+      <input id="timefin" type="time" name="horafin" required/> <br/>
   </div>
   </fieldset>
     <button type="submit" class="btn btn-primary">Crear Evento</button>

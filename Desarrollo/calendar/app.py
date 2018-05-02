@@ -20,11 +20,12 @@ def login():
     else:
         email = request.form['email']
         pass1 = request.form['pass1'] 
-        con_login=run_query('select usuario from usuarios where e_mail="{}" and contraseña="{}"'.format(email,pass1))
+        con_login=run_query('select usuario,e_mail from usuarios where e_mail="{}" and contraseña="{}"'.format(email,pass1))
         #Busco en la base de datos y si existe usuario y contraseña, inicio la sesión
         
         if con_login!=():
             session["usuario"]=con_login[0][0]
+            session["email"]=con_login[0][1]
             return redirect("/")
         else:
             error="Datos incorrectos."
@@ -64,6 +65,7 @@ def registro():
 @app.route('/logout')
 def logout():
     session.pop("usuario",None)
+    session.pop("email",None)
     return redirect("/")
 
 #Programación de eventos
@@ -94,10 +96,17 @@ def addeventos():
         horafin = request.form['horafin']
         fi=datetime.datetime.strptime(fechaini, "%Y-%m-%d")
         ff=datetime.datetime.strptime(fechafin, "%Y-%m-%d")
+        hi=datetime.datetime.strptime(horaini, "%H:%M")
+        hf=datetime.datetime.strptime(horafin, "%H:%M")
         if ff<fi:
             error="La fecha final debe ser mayor que la inicial."
             return render_template("addeventos.html",datos=request.form,error=error)
-
+        if hf<hi:
+            error="La hora final debe ser mayor que la inicial."
+            return render_template("addeventos.html",datos=request.form,error=error)
+        run_query('insert into eventos values("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format(codigo,periodo,prioridad,session["email"],titulo,duracion,descripcion,fechaini,fechafin,horaini,horafin))
+            exito="Se ha creado el usuario correctamente. Inicia sesión para poder empezar a usar la mejor agenda del mundo :)"
+            return redirect("/eventos")
         
 
 @app.route('/eventos/del/<cod>')
