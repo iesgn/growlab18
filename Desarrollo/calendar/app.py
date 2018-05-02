@@ -16,8 +16,11 @@ def inicio():
 @app.route('/login')
 def login():
     if request.method=="GET":
-          return render_template("login.html")
+          return render_template("login.html", exito=None)
     else:
+          email = request.form['email']
+          pass1 = request.form['pass1'] 
+          con_login=run_query('select usuario from usuarios where e_mail="{}" and contraseña="{}"'.format(email,pass1))
         #Busco en la base de datos y si existe usuario y contraseña, inicio la sesión
         pass
  
@@ -45,6 +48,8 @@ def registro():
             return render_template("registro.html",datos=request.form,error=error)
         else:
             run_query('insert into usuarios values("{}", "{}", "{}")'.format(email, usuario, pass1))
+            exito="Se ha creado el usuario correctamente. Inicia sesión para poder empezar a usar la mejor agenda del mundo :)"
+            return render_template("login.html", exito=exito)
         #Compruebo que el usuario no exista.
         #Si no existe lo añado a la BD
         pass
