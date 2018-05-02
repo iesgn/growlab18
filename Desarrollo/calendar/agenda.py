@@ -4,13 +4,13 @@ SEG_TEMP=5 				# constante de tiempo (EN MINUTOS) para "segmentar" el dia
 HORA = "%H:%M"			# Formato para la funcion datetime
 FECHA= "%d/%m/%Y"
 DESCANSO=0
-FechaHoy=datetime.strptime("6/2/2018", FECHA)
+FechaHoy=datetime.strptime("2/5/2018", FECHA)
 
 # Voy a hacer un fichero de texto con varios eventos para ahorrarme el escribirlo por pantalla
 # estructura del archivo: nombre, periodo, prioridad, duracion, fecha_inicio, fecha_fin, hora_inicio, hora_fin
 def IngresarEventos():
 	eventos=[]
-	with open ("eventos.txt","r") as text: 
+	with open ("eventos2.txt","r") as text: 
 		for evento in text:
 			dic={}
 			dic["nombre"]=evento.split(",")[0]
@@ -97,10 +97,6 @@ def Comprobar (seg,*horario, **candidato):
 			return False
 	return True
 
-################################################################################################
-#                                EN PRUEBA
-################################################################################################
-
 # Genero una lista de diccionarios con todos los candidatos. Con la hora inicial modificada en cada candidato | Retorna una lista de diccionarios
 def GenerarCandidatos(**kwargs):
 	lista=[]
@@ -127,7 +123,7 @@ def BusquedaProfunda(*tempri):
 			else:
 				conflictos=Conflictos(horario,candidato)
 				for idz,conflicto in enumerate(conflictos):
-					if candidato["lomastarde"]:
+					if candidato["lomastarde"]=="True":
 						seg=conflicto[1]-1
 					else:
 						seg=conflicto[1]+1		
@@ -138,7 +134,6 @@ def BusquedaProfunda(*tempri):
 					if idz == len(conflictos)-1:
 						for idu,u in enumerate(tempri[x]):
 							if u in GenerarCandidatos(**candidato):
-								print(idu)
 								error.append(tempri[x].pop(idu))		
 	return horario, error
 
@@ -190,9 +185,6 @@ if __name__ == '__main__':
 	eventos=SelecEventos(*IngresarEventos())
 	Tempri=TablaTemPri(*eventos)
 	horario,error=BusquedaProfunda(*Tempri)
-	FechaHoy=datetime.strptime("2/5/2018", FECHA)
-	print(horario)
 	ImprimirDia(*horario)
-#error=Conflictos(horario,error)
-#print(error)
+
 
